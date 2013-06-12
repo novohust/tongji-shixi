@@ -1,0 +1,7 @@
+#pagination .input-mini{   margin: 0 2px;
+    width: 16px;}
+#pagination > span{display: inline-block;vertical-align:super;
+height: 100%;}
+#pagination .btn{margin-left: 5px;}
+#pagination .page-jump-wrapper{box-shadow: none!important;}
+#pagination #page-jump-info{border:none!important;padding-bottom:0;}
