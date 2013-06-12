@@ -1,0 +1,44 @@
+.inputContainer{float:left;position:relative;}
+.formError{display:block;position:absolute;top:300px;left:300px;cursor:pointer;z-index:5000;}
+.ajaxSubmit{display:none;padding:20px;border:1px solid #999;background:#55ea55;}
+.formError .formErrorContent{
+	/*position:relative;width:100%;background:#ee0101;color:#fff;width:150px;padding:4px 10px 4px 10px;border:2px solid #ddd;border-radius:6px;box-shadow:0 0 6px #000;z-index:5001;*/
+	background: none repeat scroll 0 0 #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px 4px 4px 4px;
+    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    color: #B94A48;
+    padding: 3px 10px;
+    position: relative;
+    z-index: 5001;
+    white-space:nowrap;	/*important!!!*/
+    line-height:20px;
+	}
+.greenPopup .formErrorContent{color:#669533;}
+.blackPopup .formErrorContent{color:#888;}
+
+.formErrorContent:after, .formErrorContent:before {
+    background-color: transparent;
+    border: medium solid transparent;
+    content: " ";
+    height: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 100%;
+    width: 0;
+}
+.formErrorContent:after {
+    border-color: rgba(255, 255, 255, 0);
+    border-width: 5px;
+    margin-top: -5px;
+    top: 50%;
+    border-right-color: #ffffff;
+}
+.formErrorContent:before {
+    border-color: rgba(200, 200, 200, 0);
+    border-width: 6px;
+    margin-top: -6px;
+    top: 50%;
+    border-right-color: #c8c8c8;
+}
+

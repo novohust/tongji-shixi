@@ -1,0 +1,125 @@
+.btn-mini [class^="icon-"], .btn-mini [class*=" icon-"] {
+	margin-top: 1px;
+	margin-left: -3px;
+	margin-right: 2px;
+}
+
+#content {
+	padding: 20px;
+	margin-left: -2px;
+	overflow: hidden;
+	min-height: 375px;
+}
+
+#sidebar-left {
+	background: transparent;
+	margin: -1px 0px 0px 20px;
+	padding-top: 0px;
+}
+
+.sidebar-nav>ul {
+	margin: 0px 0px 0px -20px;
+}
+
+footer {
+	margin: 20px -20px 0px -20px;
+	padding: 10px 20px;
+	position: relative;
+	z-index: 2;
+}
+
+body {
+	min-width: 950px;
+}
+
+.box-header .box-icon {
+	margin-top: -2px;
+}
+
+.center-form-action {
+	margin-bottom: -20px;
+	margin-top: 0;
+	border: none;
+	background: transparent;
+	text-align: center;
+}
+
+.noty_message {
+	text-align: center;
+}
+
+.animated {
+	-webkit-animation-duration: 1s;
+	-webkit-animation-timing-function: ease;
+	-webkit-animation-fill-mode: both;
+	-moz-animation-duration: 1s;
+	-moz-animation-timing-function: ease;
+	-moz-animation-fill-mode: both;
+	-ms-animation-duration: 1s;
+	-ms-animation-timing-function: ease;
+	-ms-animation-fill-mode: both;
+	animation-duration: 1s;
+	animation-timing-function: ease;
+	animation-fill-mode: both;
+}
+
+table .center {
+	text-align: center;
+}
+
+.widget {
+	margin: 0 20px;
+}
+
+.widget h2 {
+	margin-left: -10px;
+}
+
+.query-form {
+	padding-top: 15px;
+	border: solid 1px #eee;
+	box-shadow: 0px 0px 15px #eee;
+	border-radius: 4px;
+}
+
+.float-form .control-group {
+	float: left;
+	margin-bottom: 10px
+}
+
+.float-form .control-label {
+	width: 60px;
+}
+
+.float-form .controls {
+	margin-left: 65px;
+}
+
+.float-form-actions {
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 10px;
+}
+
+.check-all-page {
+	margin-top: -10px;
+	text-align: center;
+	font-size: 14px;
+	margin-bottom: 10px;
+}
+
+.table tbody tr.details:hover td:hover {
+	background-color: transparent;
+}
+
+#data-man-nav-wapper {
+	text-align: center;
+}
+#data-man-nav-wapper a.btn{
+	font-size:12px!important;
+}
+
+.modal-body em{
+	font-weight:bold;
+	margin:0 3px;
+}
