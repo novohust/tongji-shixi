@@ -7,6 +7,8 @@
 	<script src="${ctx}/static/js/jquery-ui-i18n.js"></script>
 	<script src="${ctx}/static/js/modernizr.js"></script>
 	<script src="${ctx}/static/js/bootstrap.min.js"></script>
+	<script src="${ctx}/static/js/bootstrap-inputmask.min.js"></script>
+	<script src="${ctx}/static/js/bootstrap-fileupload.js"></script>
 	<script src="${ctx}/static/js/jquery.cookie.js"></script>
 	<script src='${ctx}/static/js/fullcalendar.min.js'></script>
 	<script src='${ctx}/static/js/jquery.dataTables.min.js'></script>

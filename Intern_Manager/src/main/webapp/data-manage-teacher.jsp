@@ -1,9 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<%@ page import="org.hustsse.cloud.enums.*"%>
 <%@ include file="/common/taglibs.jsp"%>
 
 <c:set var="pageTitle" value="数据管理-老师" scope="page"></c:set>
-<c:set var="genderEnums" value="<%=GenderEnum.values()%>"/>
 
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -87,9 +85,9 @@
 									</div>
 
 									<div class="control-group">
-										<label for="" class="control-label">名称</label>
+										<label for="" class="control-label">姓名</label>
 										<div class="controls">
-											<input type="text" value="${query.name}" name="name" class="input-medium" placeholder="请输入老师名称">
+											<input type="text" value="${query.name}" name="name" class="input-medium" placeholder="请输入老师姓名">
 										</div>
 									</div>
 
@@ -122,7 +120,7 @@
 													<th style="width: 10px" class="center"><input
 														type="checkbox" rel="uniform" class="check-all"></th>
 													<th>工号</th>
-													<th>名称</th>
+													<th>姓名</th>
 													<th>教授组</th>
 													<th>病区</th>
 													<th>科室</th>
@@ -255,10 +253,10 @@
 									</div>
 
 									<div class="control-group">
-										<label for="" class="control-label">名称</label>
+										<label for="" class="control-label">姓名</label>
 										<div class="controls">
 											<input name="name" type="text"
-												class="input-large validate[required]"	maxlength="20" placeholder="请输入老师名称" id="nameAdd">
+												class="input-large validate[required]"	maxlength="20" placeholder="请输入老师姓名" id="nameAdd">
 										</div>
 									</div>
 
@@ -276,7 +274,7 @@
 									<div class="control-group">
 										<label for="" class="control-label">出生日期</label>
 										<div class="controls">
-											<input name="birthday" type="text" yearRange="1970:2000" class="input-large datepicker-dropdown-year-month validate[custom[date]]" placeholder="格式 1983-01-02">
+											<input name="birthday" type="text" data-mask="9999-99-99" yearRange="1970:2000" class="input-large datepicker-dropdown-year-month validate[custom[date]]" placeholder="格式 1983-01-02">
 										</div>
 									</div>
 									<div class="form-actions">
@@ -391,10 +389,10 @@
 									</div>
 
 									<div class="control-group">
-										<label for="" class="control-label">名称</label>
+										<label for="" class="control-label">姓名</label>
 										<div class="controls">
 											<input name="name" type="text" value="<@=teacher.name@>"
-												class="input-medium validate[required]"	maxlength="20" placeholder="请输入老师名称" id="nameEdit">
+												class="input-medium validate[required]"	maxlength="20" placeholder="请输入老师姓名" id="nameEdit">
 										</div>
 									</div>
 

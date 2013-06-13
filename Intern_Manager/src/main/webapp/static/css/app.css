@@ -123,3 +123,10 @@ table .center {
 	font-weight:bold;
 	margin:0 3px;
 }
+.fileupload-preview,.popover-content img.avatar{
+	max-width: 150px; max-height: 150px; line-height: 20px;
+}
+.popover-content img.avatar{border-radius:6px;}
+.tip-thumbnail{
+	width: 150px; height: 150px;
+}
