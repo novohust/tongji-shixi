@@ -12,7 +12,7 @@ public class DataManagerController {
 	@RequestMapping(value="")
 	public ModelAndView dataManIndex()
 	{
-		return new ModelAndView("forward:/data-manage/stu");
+		return new ModelAndView("forward:/data-manage/student");
 	}
 
 }
