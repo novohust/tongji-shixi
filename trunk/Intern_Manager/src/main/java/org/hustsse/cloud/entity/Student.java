@@ -21,10 +21,12 @@ public class Student extends IdEntity {
 	private String name;
 	private Date birthday;
 	private String mentor;
-	private int grade;
+	private Integer grade;
+	private Integer clazz;
 	private StuTypeEnum type;
 	private GenderEnum gender;
 	private String avatar;
+	private String description;
 
 	private Major major;
 
@@ -79,11 +81,11 @@ public class Student extends IdEntity {
 		this.mentor = mentor;
 	}
 
-	public int getGrade() {
+	public Integer getGrade() {
 		return grade;
 	}
 
-	public void setGrade(int grade) {
+	public void setGrade(Integer grade) {
 		this.grade = grade;
 	}
 
@@ -102,5 +104,21 @@ public class Student extends IdEntity {
 
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
+	}
+
+	public Integer getClazz() {
+		return clazz;
+	}
+
+	public void setClazz(Integer clazz) {
+		this.clazz = clazz;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 }
