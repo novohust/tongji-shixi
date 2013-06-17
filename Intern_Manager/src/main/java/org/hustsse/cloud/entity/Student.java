@@ -1,13 +1,16 @@
 package org.hustsse.cloud.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hustsse.cloud.enums.GenderEnum;
@@ -29,6 +32,7 @@ public class Student extends IdEntity {
 	private String description;
 
 	private Major major;
+	private List<Internship> internships;
 
 	@Enumerated(EnumType.STRING)
 	public GenderEnum getGender() {
@@ -120,5 +124,14 @@ public class Student extends IdEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = { CascadeType.REMOVE })
+	public List<Internship> getInternships() {
+		return internships;
+	}
+
+	public void setInternships(List<Internship> internships) {
+		this.internships = internships;
 	}
 }

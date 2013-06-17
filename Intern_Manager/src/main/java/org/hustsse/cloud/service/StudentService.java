@@ -38,6 +38,10 @@ public class StudentService {
 		return studentDao.findUniqueBy("id", id);
 	}
 
+	public Student findByIdWithMajor(Long id) {
+		return studentDao.findUnique("from Student s join fetch s.major where s.id = ?", id);
+	}
+
 	/**
 	 * 分页按条件查询，目前只有查询页面调用
 	 *

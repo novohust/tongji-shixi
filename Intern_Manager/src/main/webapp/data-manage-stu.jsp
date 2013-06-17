@@ -151,7 +151,7 @@
 					<!-- start: 分页 -->
 					<!-- 分页  -->
 					<div  class="pagination pagination-centered">
-				    		<form id="queryform" target="_self" style="display:none;" method="post" action="myTaskList.htm">
+				    		<form id="queryform" target="_self" style="display:none;" method="get" action="myTaskList.htm">
 					            		<input id="pageNum" type="hidden" value="11" name="pageNum">
 					            		<input id="pageSize" type="hidden" value="10" name="pageSize">
 					            		<input id="totalCount" type="hidden" value="101" name="totalCount">
