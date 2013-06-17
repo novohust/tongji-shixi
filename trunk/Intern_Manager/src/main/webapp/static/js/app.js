@@ -30,6 +30,24 @@ $.extend({
 		}
 });
 
+$.fn.serializeJson=function(){
+	var serializeObj={};
+	var array=this.serializeArray();
+	var str=this.serialize();
+	$(array).each(function(){
+	if(serializeObj[this.name]){
+	if($.isArray(serializeObj[this.name])){
+	serializeObj[this.name].push(this.value);
+	}else{
+	serializeObj[this.name]=[serializeObj[this.name],this.value];
+	}
+	}else{
+	serializeObj[this.name]=this.value;
+	}
+	});
+	return serializeObj;
+	};
+
 
 $(document).ready(function(){
 
@@ -115,10 +133,11 @@ function docReady(){
 		      this.selectedIndex = -1;
 
 		      */
-
 		    $.uniform.update(this);	//更新uniform样式
 		    $(this).validationEngine('hide'); //隐藏VE的tip
 		});
+		// file upload
+		$(e.target).closest('form').find('*[data-dismiss=fileupload]').click();
 	});
 
 	// 二级学科、科室、病区、教授组、老师联动下拉框

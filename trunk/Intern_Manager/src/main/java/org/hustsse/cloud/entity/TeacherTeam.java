@@ -17,6 +17,7 @@ public class TeacherTeam extends IdEntity {
 
 	private Area area;
 	private List<Teacher> teachers;
+	private List<Internship> internships;
 
 	public String getName() {
 		return name;
@@ -44,5 +45,15 @@ public class TeacherTeam extends IdEntity {
 	public void setTeachers(List<Teacher> teachers) {
 		this.teachers = teachers;
 	}
+
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "teacherTeam", cascade = { CascadeType.REMOVE })
+	public List<Internship> getInternships() {
+		return internships;
+	}
+
+	public void setInternships(List<Internship> internships) {
+		this.internships = internships;
+	}
+
 
 }
