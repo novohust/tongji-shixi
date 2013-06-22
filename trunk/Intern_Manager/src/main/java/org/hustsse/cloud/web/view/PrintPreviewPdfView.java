@@ -133,7 +133,7 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 		cell.setPaddingLeft(20);
 		cell.setPaddingRight(20);
 		cell.setPaddingBottom(10);
-		String code = StringUtils.join(new Object[] { s.getId(), year, month, week.value() }, " ");
+		String code = StringUtils.join(new Object[] { s.getId(), year, month, week.value()}, ",");
 		code128.setCode(code);
 		cell.addElement(code128.createImageWithBarcode(cb, null, null));
 		Paragraph p = new Paragraph(s.getName() + " - " + s.getMajor().getName(), f);

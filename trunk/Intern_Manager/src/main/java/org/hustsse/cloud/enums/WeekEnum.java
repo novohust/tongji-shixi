@@ -19,6 +19,14 @@ public enum WeekEnum {
 		return value;
 	}
 
+	/**
+	 * JSTL中必须要getter
+	 * @return
+	 */
+	public int getValue() {
+		return value();
+	}
+
 	public WeekEnum valueOf(int i) {
 		for (WeekEnum w : WeekEnum.values()) {
 			if(w.value() == i)return w;

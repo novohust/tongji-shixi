@@ -58,6 +58,13 @@ public class StudentController {
 		return d;
 	}
 
+	@RequestMapping(value = "/stuNo/{stuNo}")
+	@ResponseBody
+	public Student findByStuNo(@PathVariable String stuNo) {
+		Student d = studentService.findByStudentNo(stuNo);
+		return d;
+	}
+
 	@Value("#{mvcProp.upload_avatar_folder}")
 	Resource uploadAvatarDir;
 

@@ -20,6 +20,7 @@ public class Internship extends IdEntity {
 
 	private Student student;
 	private TeacherTeam teacherTeam;
+	private Teacher teacher;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "student_id")
@@ -66,7 +67,14 @@ public class Internship extends IdEntity {
 		this.weekType = weekType;
 	}
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "teacher_id")
+	public Teacher getTeacher() {
+		return teacher;
+	}
 
-
+	public void setTeacher(Teacher teacher) {
+		this.teacher = teacher;
+	}
 
 }
