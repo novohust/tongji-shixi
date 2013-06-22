@@ -23,6 +23,7 @@
 @import "elfinder.theme.css";			/* File Manager Style */
 @import "jquery.iphone.toggle.css";		/* Styles for iPhone */
 @import "uploadify.css";				/* Uploadify Styles */
+@import "bootstrap-fileupload.css";				/* Bootstrap fileupload Styles */
 @import "jquery.gritter.css";			/* Growl Like Notifications Styles */
 @import "font-awesome.css";				/* Font Awesome Styles */
 @import "font-awesome-ie7.css";			/* Font Awesome Styles */
@@ -841,7 +842,7 @@ ul.messages li .message {
 .label,
 .badge {
   text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.15);
-  font-family: 'Open Sans', sans-serif;
+  font-family: '微软雅黑','Open Sans', sans-serif;
   font-weight: 600;
   font-size: 12px;
   padding: 3px 6px;
