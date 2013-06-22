@@ -245,6 +245,40 @@ function docReady(){
 		}
 	});
 
+	$("select.select-team").live("change",function(){
+		var teacher = $(this).closest('form').find('select.select-teacher');
+		if(teacher.length == 0)	return;
+		teacher.validationEngine('hide');	// 隐藏VE的tip，不然会错位
+
+		var isTeacherRequired = teacher.is('.required');
+		var val = $(this).val();
+
+		// 清空教授组下拉框，如果不是必填的，塞一个空的选项进去
+		teacher.html('');
+		if(!isTeacherRequired) teacher.prepend(emptyOption.clone());
+		//病区选择了空值，则让教授组选择第一个选项(空)，并手动触发select事件，返回
+		if(!val){
+			teacher.selectedIndex = 0;
+			$.uniform.update(teacher);
+			teacher.trigger("change");
+		}else{
+			$.get($.appCtx+ "/data-manage/teacher/all/"+val,function(data) {
+				var initIndex = 0;	// 初始要选中哪个选项
+				if(data){
+					var initVal = teacher.attr("init-value");
+					$(data).each(function(i,e){
+						teacher.append($('<option value="'+e.id+'">'+e.name+'</option>'))
+						if(initVal != undefined && initVal == e.id)
+							initIndex = i+(isTeacherRequired?0:1);//非必填的科室选择框要多一个空选择项
+					});
+				}
+				teacher.find('option').eq(initIndex).attr('selected',true);
+				$.uniform.update(teacher);
+				teacher.removeAttr('init-value').trigger("change");
+			});
+		}
+	});
+
 	// select初始状态或者手动设置selectedIndex不会触发change事件。手动触发的顺序自底向上
 	$("select.select-team").trigger('change');
 	$("select.select-dept").trigger('change');

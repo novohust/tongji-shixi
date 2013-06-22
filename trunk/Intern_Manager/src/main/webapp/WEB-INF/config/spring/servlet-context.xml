@@ -49,7 +49,6 @@
 	<!-- 定义无需Controller的url<->view直接映射 -->
 	<!-- 首页-->
 	 <view-controller path="/" view-name="index" />
-	 <view-controller path="/data-manage" view-name="data-manage" />
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp  -->
 	<beans:bean
