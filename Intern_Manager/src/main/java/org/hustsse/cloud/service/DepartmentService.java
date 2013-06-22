@@ -70,4 +70,8 @@ public class DepartmentService {
 		departmentDao.findPage(page, c);
 		return page;
 	}
+
+	public List<Department> findAll() {
+		return departmentDao.getAll();
+	}
 }

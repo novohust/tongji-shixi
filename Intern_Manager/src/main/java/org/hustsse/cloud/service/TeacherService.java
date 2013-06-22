@@ -51,8 +51,8 @@ public class TeacherService {
 				+ " join fetch a.teacherTeam.area.department where a.id = ?", id);
 	}
 
-	public List<Teacher> findByAreaId(Long areaId) {
-		return teacherDao.findBy("area.id", areaId);
+	public List<Teacher> findByTeamId(Long areaId) {
+		return teacherDao.findBy("teacherTeam.id", areaId);
 	}
 
 	/**

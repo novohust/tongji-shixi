@@ -7,6 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.hustsse.cloud.dao.base.Page;
 import org.hustsse.cloud.entity.SecondarySubject;
 import org.hustsse.cloud.entity.Teacher;
+import org.hustsse.cloud.entity.TeacherTeam;
 import org.hustsse.cloud.enums.GenderEnum;
 import org.hustsse.cloud.service.SecondarySubjectService;
 import org.hustsse.cloud.service.TeacherService;
@@ -50,6 +51,13 @@ public class TeacherController {
 	@ResponseBody
 	public Teacher findById(@PathVariable Long id) {
 		Teacher d = teacherService.findByIdWithTeamAndAreaAndDept(id);
+		return d;
+	}
+
+	@RequestMapping(value = "/all/{teamId}")
+	@ResponseBody
+	public List<Teacher> findAllByTeamId(@PathVariable Long teamId) {
+		List<Teacher> d = teacherService.findByTeamId(teamId);
 		return d;
 	}
 
