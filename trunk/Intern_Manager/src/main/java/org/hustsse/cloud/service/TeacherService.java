@@ -141,4 +141,8 @@ public class TeacherService {
 	public Teacher findByTeacherNo(String teacherNo) {
 		return teacherDao.findUniqueBy("teacherNo", teacherNo);
 	}
+
+	public List<Teacher> findAll() {
+		return teacherDao.getAll();
+	}
 }

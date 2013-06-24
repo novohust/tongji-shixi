@@ -3,7 +3,9 @@ package org.hustsse.cloud.service;
 import java.util.List;
 
 import org.hustsse.cloud.dao.InternshipDao;
+import org.hustsse.cloud.dao.base.Page;
 import org.hustsse.cloud.entity.Internship;
+import org.hustsse.cloud.enums.WeekEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +33,11 @@ public class InternshipService {
 		for (Internship intern : internAddList) {
 			internshipDao.save(intern);
 		}
+	}
+
+	public Page<Internship> findByConditions(Internship internship, int totalPages, Integer pageSize, Integer startYear,
+			Integer startMonth, WeekEnum startWeek, Integer endYear, Integer endMonth, WeekEnum endWeek) {
+		return null;
 	}
 
 }
