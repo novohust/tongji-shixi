@@ -20,7 +20,7 @@
 			<!-- end: Main Menu -->
 
 			<!-- start: Content -->
-			<div id="content" class="span11" style="border-top-left-radius: 0;">
+			<div id="content" class="span11" >
 				<c:set var="dataManCurPage" value="teacherTeam" scope="page"></c:set>
 				<%@ include file="/common/data-man-nav.jsp"%>
 
@@ -368,7 +368,7 @@
 			// 列表中多选时看情况dis/enable掉删除按钮
 			$("#teacher-team-table input[type=checkbox]").change(function() {
 				$('#btn-del').attr('disabled', true);
-				$("#teacher-team-table input[type=checkbox]").each(function() {
+				$("#teacher-team-table tbody input[type=checkbox]").each(function() {
 					if ($(this).attr('checked'))
 						$('#btn-del').removeAttr('disabled');
 				});

@@ -8,4 +8,5 @@
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <c:set var="genderEnums" value="<%=GenderEnum.values()%>"/>
 <c:set var="stuTypeEnums" value="<%=StuTypeEnum.values()%>"/>
+<c:set var="weekEnums" value="<%=WeekEnum.values()%>"/>
 
