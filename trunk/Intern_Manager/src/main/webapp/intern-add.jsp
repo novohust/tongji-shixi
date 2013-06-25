@@ -127,7 +127,7 @@
 											<label for="" class="control-label">实习月份</label>
 											<div class="controls">
 												<select name="year" id="" class="input-mini" rel="uniform">
-													<c:forEach var="item" varStatus="status" begin="2013" end="2023">
+													<c:forEach var="item" varStatus="status" begin="2013" end="2050">
 													<option value="${status.index}">${status.index}</option>
 													</c:forEach>
 												</select>

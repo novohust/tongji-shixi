@@ -189,7 +189,7 @@
 		// 列表中多选时看情况dis/enable掉删除按钮
 		$("#major-table input[type=checkbox]").change(function(){
 			$('#btn-del').attr('disabled',true);
-			$("#major-table input[type=checkbox]").each(function(){
+			$("#major-table tbody input[type=checkbox]").each(function(){
 				if($(this).attr('checked'))
 					$('#btn-del').removeAttr('disabled');
 			});

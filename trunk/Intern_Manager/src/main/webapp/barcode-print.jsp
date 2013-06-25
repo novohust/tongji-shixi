@@ -28,9 +28,7 @@
 			<!-- end: Main Menu -->
 
 			<!-- start: Content -->
-			<div id="content" class="span11" style="border-top-left-radius:0;">
-
-
+			<div id="content" class="span11">
 
 				<div class="widget">
 					<h2><span class="glyphicons chevron-right"><i></i></span>选择学生</h2>

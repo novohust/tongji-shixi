@@ -94,7 +94,7 @@ function docReady(){
 	// table
 	$("table .check-all").live('click',function(e){
 		var cbs = $(e.target).closest('table').find('tbody input[type=checkbox]');
-		cbs.attr('checked',$(e.target).attr('checked')?true:false);
+		cbs.attr('checked',$(e.target).attr('checked')?true:false).trigger('change');
 		$.uniform.update(cbs);
 	});
 
