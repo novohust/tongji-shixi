@@ -81,12 +81,10 @@ public class DepartmentController {
 	public List<Object> nameCanUseWhenAdd(@RequestParam String fieldId, @RequestParam String fieldValue, @RequestParam Long ssIdAdd) {
 		List<Object> result = new ArrayList<Object>(2);
 		result.add(fieldId);
-		List<Department> depts = departmentService.findBySecondarySubjectId(ssIdAdd);
-		for (Department dept : depts) {
-			if(dept.getName().equals(fieldValue)) {
-				result.add(false);
-				return result;
-			}
+		boolean nameUsed = departmentService.isNameUsed(ssIdAdd, fieldValue);
+		if(nameUsed) {
+			result.add(false);
+			return result;
 		}
 		result.add(true);
 		return result;
@@ -125,14 +123,11 @@ public class DepartmentController {
 		}
 
 		// 指定二级学科下有重复名字，名称不可用
-		List<Department> depts = departmentService.findBySecondarySubjectId(ssIdEdit);
-		for (Department department : depts) {
-			if(department.getName().equals(name)) {
-				result.add(false);
-				return result;
-			}
+		boolean nameUsed = departmentService.isNameUsed(ssIdEdit, name);
+		if(nameUsed) {
+			result.add(false);
+			return result;
 		}
-
 		// 名称可用
 		result.add(true);
 		return result;

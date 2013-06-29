@@ -10,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hustsse.cloud.dao.AreaDao;
 import org.hustsse.cloud.dao.base.Page;
 import org.hustsse.cloud.entity.Area;
+import org.hustsse.cloud.entity.Department;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,5 +81,15 @@ public class AreaService {
 		page.setAutoCount(true);
 		areaDao.findPage(page, c);
 		return page;
+	}
+
+	public boolean isNameUsed(Long deptId, String name) {
+		Area a = areaDao.findUnique("from Area where department.id = ? and name = ?",deptId,name);
+		return a != null;
+	}
+
+	public Area findByAreaDeptSSName(String areaName, String deptName, String ssName) {
+		Area a = areaDao.findUnique("from Area a join fetch a.department d join fetch d.secondarySubject s where s.name = ? and d.name = ? and a.name = ?",ssName,deptName,areaName);
+		return a;
 	}
 }

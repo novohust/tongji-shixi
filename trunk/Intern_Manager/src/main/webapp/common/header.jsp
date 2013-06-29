@@ -8,8 +8,8 @@
 				<div class="nav-no-collapse header-nav">
 					<ul class="nav pull-right">
 						<!-- end: User Dropdown -->
-						<li  rel="tooltip" title="退出登录">
-							<a class="btn" href="#">
+						<li title="退出登录">
+							<a class="btn" href="${ctx}/auth/logout">
 								<i class="halflings-icon white off"></i>
 							</a>
 						</li>
@@ -17,7 +17,7 @@
 				</div>
 
 				<div class=" pull-right" style="margin-top:10px;margin-right:10px;">
-					<i class="halflings-icon white user" style="margin-top:3px;"></i>&nbsp;欢迎回来，admin
+					<i class="halflings-icon white user" style="margin-top:3px;"></i>&nbsp;欢迎回来，<sec:authentication property="name"/>
 				</div>
 				<!-- end: Header Menu -->
 

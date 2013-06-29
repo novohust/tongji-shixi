@@ -65,7 +65,7 @@ public class StudentService {
 		return page;
 	}
 
-	public Student findByStudentNo(String teacherNo) {
-		return studentDao.findUniqueBy("stuNo", teacherNo);
+	public Student findByStudentNo(String stuNo) {
+		return studentDao.findUniqueBy("stuNo", stuNo);
 	}
 }

@@ -22,7 +22,7 @@ public class SecondarySubjectManController {
 	SecondarySubjectService secondarySubjectService;
 
 	@RequestMapping(value = "")
-	public String allMajor(ModelMap map) {
+	public String allSecondarySubject(ModelMap map) {
 		List<SecondarySubject> allSecondarySubjects = secondarySubjectService.findAll();
 		map.put("allSecondarySubject", allSecondarySubjects);
 		return "data-manage-secondary-subject";
@@ -36,19 +36,19 @@ public class SecondarySubjectManController {
 
 	@RequestMapping(value = "/{id}")
 	@ResponseBody
-	public SecondarySubject findMajorById(@PathVariable Long id) {
+	public SecondarySubject findSSById(@PathVariable Long id) {
 		return secondarySubjectService.findById(id);
 	}
 
 	@RequestMapping(value = "/add")
-	public ModelAndView addMajor(SecondarySubject secondarySubject) {
+	public ModelAndView addSS(SecondarySubject secondarySubject) {
 		secondarySubject.setName(secondarySubject.getName().trim());
 		secondarySubjectService.add(secondarySubject);
 		return new ModelAndView("redirect:/data-manage/secondary-subject");
 	}
 
 	@RequestMapping(value = "/del")
-	public ModelAndView deleteMajor(Long[] ids) {
+	public ModelAndView deleteSS(Long[] ids) {
 		for (Long id : ids) {
 			secondarySubjectService.delete(id);
 		}
@@ -86,7 +86,7 @@ public class SecondarySubjectManController {
 	}
 
 	@RequestMapping(value = "/update")
-	public ModelAndView updateMajor(SecondarySubject secondarySubject) {
+	public ModelAndView updateSS(SecondarySubject secondarySubject) {
 		secondarySubject.setName(secondarySubject.getName().trim());
 		secondarySubjectService.update(secondarySubject);
 		return new ModelAndView("redirect:/data-manage/secondary-subject");

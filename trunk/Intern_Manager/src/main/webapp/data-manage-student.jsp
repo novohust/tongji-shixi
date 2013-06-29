@@ -324,7 +324,7 @@
 										<div class="controls">
 											<div class="fileupload fileupload-new" data-provides="fileupload">
 											  	<div class="fileupload-new thumbnail tip-thumbnail">
-											  		<img src="http://www.placehold.it/150x150/EFEFEF/AAAAAA" />
+											  		<img src="${ctx}/static/img/default_avatar.gif" />
 											 	</div>
 											  	<div class="fileupload-preview fileupload-exists thumbnail"></div>
 												<div>
@@ -477,7 +477,7 @@
 										<div class="controls">
 											<div class="fileupload fileupload-new" data-provides="fileupload">
 											  	<div class="fileupload-new thumbnail tip-thumbnail">
-											  		<img src="<@=$.appCtx+student.avatar@>?x=<@=Math.random()@>" />
+											  		<img src="<@=$.appCtx+(student.avatar?student.avatar:"/static/img/default_avatar.gif")@>?x=<@=Math.random()@>" />
 											 	</div>
 											  	<div class="fileupload-preview fileupload-exists thumbnail"></div>
 												<div>

@@ -10,4 +10,12 @@ public enum StuTypeEnum {
     public String getDescription() {
         return util.getProperty(this.toString());
     }
+
+    public static StuTypeEnum fromDesc(String desc) {
+		for (StuTypeEnum t : StuTypeEnum.values()) {
+			if(t.getDescription().equals(desc))
+				return t;
+		}
+		return null;
+	}
 }

@@ -3,12 +3,14 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:jee="http://www.springframework.org/schema/jee"
 	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 		http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
 		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.1.xsd
 		http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
 
 	<!-- 数据源、事务、entitymanager -->
@@ -86,4 +88,39 @@
 	<!-- 使用annotation定义事务 -->
 	<tx:annotation-driven transaction-manager="transactionManager"
 		proxy-target-class="true" />
+
+	<!-- spring security 权限设置 -->
+	<security:http auto-config="true" use-expressions="true" access-denied-page="/auth/denied" >
+        <security:intercept-url pattern="/intern-query" access="hasAnyRole('User','Admin')"/>
+        <security:intercept-url pattern="/intern-query/*" access="hasAnyRole('User','Admin')"/>
+
+        <security:intercept-url pattern="/intern-add" access="hasRole('Admin')"/>
+        <security:intercept-url pattern="/intern-add/*" access="hasRole('Admin')"/>
+
+        <security:intercept-url pattern="/barcode-print" access="hasRole('Admin')"/>
+        <security:intercept-url pattern="/barcode-print/*" access="hasRole('Admin')"/>
+
+        <security:intercept-url pattern="/data-manage" access="hasRole('Admin')"/>
+        <security:intercept-url pattern="/data-manage/*" access="hasRole('Admin')"/>
+
+        <security:intercept-url pattern="/data-import" access="hasRole('Admin')"/>
+        <security:intercept-url pattern="/data-import/*" access="hasRole('Admin')"/>
+        <security:form-login
+				login-page="/auth/login"
+                authentication-failure-url="/auth/login?error=true"
+                default-target-url="/intern-query"/>
+        <security:logout
+                invalidate-session="true"
+                logout-success-url="/auth/login"
+                logout-url="/auth/logout"/>
+    </security:http>
+
+<!--  -->
+    <security:authentication-manager>
+            <security:authentication-provider  user-service-ref="customUserDetailsService">
+            </security:authentication-provider>
+    </security:authentication-manager>
+
+    <bean id="customUserDetailsService"	class="org.hustsse.cloud.service.CustomUserDetailsService"/>
+
 </beans>

@@ -295,9 +295,9 @@
 			<!-- end: Content -->
 
 		<%@ include file="/common/footer.jsp"%>
-	</div>
+		</div>
 	<!--/.fluid-container-->
-
+	</div>
 	<!-- start: JavaScript-->
 	<%@ include file="/common/import-js.jsp"%>
 	<!-- end: JavaScript-->

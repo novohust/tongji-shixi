@@ -167,12 +167,6 @@
 											<option ${startMonth == status.index? "selected='selected'":""} value="${status.index}">${status.index}</option>
 										</c:forEach>
 									</select>
-									<select name="startWeek" id="" class="input-mini" rel="uniform">
-										<option value=""></option>
-										<c:forEach var="w" items="${weekEnums}">
-										<option  ${startWeek == w? "selected='selected'":""} value="${w}">${w.description}</option>
-										</c:forEach>
-									</select>
 								</div>
 							</div>
 
@@ -189,12 +183,6 @@
 										<option value=""></option>
 										<c:forEach var="item" varStatus="status" begin="1" end="12">
 											<option ${endMonth == status.index? "selected='selected'":""} value="${status.index}">${status.index}</option>
-										</c:forEach>
-									</select>
-									<select name="endWeek" id="" class="input-mini" rel="uniform">
-										<option value=""></option>
-										<c:forEach var="w" items="${weekEnums}">
-										<option  ${endWeek == w? "selected='selected'":""} value="${w}">${w.description}</option>
 										</c:forEach>
 									</select>
 								</div>
@@ -243,7 +231,7 @@
 													<input id="cb-${i.id}" type="checkbox" name="ids" value="${i.id}" rel="uniform">
 												</td>
 												<td>${i.student.stuNo}</td>
-												<td>${i.student.name}</td>
+												<td><a href="#" title="点击查看详细信息" data-toggle="tooltip" class="stu-detail-link" stu-id="${i.student.id}">${i.student.name}</a></td>
 												<td>${i.student.type.description}</td>
 												<td>${i.student.major.name}</td>
 												<td>${i.student.grade}</td>
@@ -289,11 +277,9 @@
 
 									<input type="hidden" value="${startYear}" name="startYear"/>
 									<input type="hidden" value="${startMonth}" name="startMonth"/>
-									<input type="hidden" value="${startWeek}" name="startWeek"/>
 
 									<input type="hidden" value="${endYear}" name="endYear"/>
 									<input type="hidden" value="${endMonth}" name="endMonth"/>
-									<input type="hidden" value="${endWeek}" name="endWeek"/>
 								</form>
 
 								<div id="pagination">
@@ -315,7 +301,7 @@
 			<%@ include file="/common/footer.jsp"%>
 		</div>
 		<!--/.fluid-container-->
-
+	</div>
 	<div class="modal hide fade in" id="confirmDel">
 		<div class="modal-header">
 			<button data-dismiss="modal" class="close" type="button">×</button>
@@ -329,6 +315,126 @@
 				class="btn btn-primary" href="#" id="btn-del-confirm">确定</a>
 		</div>
 	</div>
+
+	<div class="modal hide fade in" id="detailModal">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">×</button>
+			<h3>查看学生</h3>
+		</div>
+		<form style="margin: 0" class="form-horizontal">
+			<div class="modal-body">
+			</div>
+		</form>
+	</div>
+
+	<!-- 查看学生详细信息内部模板 -->
+	<script id="detail-modal-temp" type="text/html">
+			<fieldset>
+									<div class="control-group">
+										<label for="" class="control-label">学号</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.stuNo@>" name="stuNo" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">姓名</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.name@>" name="name" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">性别</label>
+										<div class="controls">
+											<select disabled="disabled" rel="uniform" class="input-mini">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=gender]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.gender))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">出生日期</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=moment(student.birthday).format('YYYY-MM-DD')@>" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">专业</label>
+										<div class="controls">
+											<select disabled="disabled" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name="student.major.id"]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.major.id))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">导师</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.mentor@>" name="mentor" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">年级</label>
+										<div class="controls"><input disabled="disabled" value="<@=student.grade@>" name="grade" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">班级</label>
+										<div class="controls"><input disabled="disabled" value="<@=(student.clazz<10)?"0"+(student.clazz):student.clazz@>" name="clazz" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">类别</label>
+										<div class="controls">
+											<select disabled="disabled" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=type]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.type))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">照片</label>
+										<div class="controls">
+											  	<div class="fileupload-new thumbnail tip-thumbnail">
+											  		<img src="<@=$.appCtx+student.avatar@>?x=<@=Math.random()@>" />
+											 	</div>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">描述</label>
+										<div class="controls">
+											<textarea disabled="disabled" name="description" maxlength="200" type="text" class="input-xlarge"><@=student.description@></textarea>
+										</div>
+									</div>
+			</fieldset>
+	</script>
+
+	<div class="hide">
+	<select name="type">
+		<c:forEach var="t" items="${stuTypeEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="gender">
+		<c:forEach var="g" items="${genderEnums}">
+			<option value="${g}">${g.description}</option>
+		</c:forEach>
+	</select>
+	</div>
+
+
 
 	<!-- start: JavaScript-->
 	<%@ include file="/common/import-js.jsp"%>
@@ -378,6 +484,25 @@
 				});
 			});
 
+			// 查看学生详细信息
+			$('.stu-detail-link').click(function(){
+				self = $(this);
+				$.get($.appCtx+ "/data-manage/student/"+ self.attr('stu-id'),function(data) {
+						if (data) {
+							$('#detailModal .modal-body').empty().html(template.render('detail-modal-temp',{
+								"student" : data,
+								"$":$,
+								"moment":moment,
+								'Math':Math
+							})).find('select[rel="uniform"],input:checkbox, input:radio, input:file')
+								.not('[data-no-uniform="true"],#uniform-is-ajax')
+								.uniform();// uniform化表单元素
+
+							$('#detailModal').modal();
+						}
+				});
+			});
+
 			// 导出excel
 			$("#export-excel").click(function(e){
 				e.preventDefault();
@@ -390,9 +515,12 @@
 
 			$(".query-form").submit(function(){
 				var canSubmit = true;
-				$("select[name=startYear],select[name=endYear]").closest(".controls").find("select").each(function(i,e){
-					if(!$(this).find("option:selected").val()){
-						noty({"text":"日期错误：年月周必须同时选择或同时不选",type:"error",layout:"topCenter"});
+				$("select[name=startYear],select[name=endYear]").closest(".controls").each(function(i,e){
+					var s = $(this).find('select');
+					var y = s.eq(0).find("option:selected").val();
+					var m = s.eq(1).find("option:selected").val();
+					if((y && !m) || (!y && m)){
+						noty({"text":"日期错误：年月必须同时选择或同时不选",type:"error",layout:"topCenter"});
 						canSubmit = false;
 						return false;
 					}
@@ -402,20 +530,15 @@
 
 				var startYear = parseInt($("select[name=startYear] option:selected").val());
 				var startMonth = parseInt($("select[name=startMonth] option:selected").val());
-				var startWeek = $("select[name=startWeek] option:selected").val();
 				var endYear = parseInt($("select[name=endYear] option:selected").val());
 				var endMonth = parseInt($("select[name=endMonth] option:selected").val());
-				var endWeek = $("select[name=endWeek] option:selected").val();
 
 				var timeError = false;
 				if(startYear > endYear ||
 					(startYear == endYear && startMonth > endMonth)){
 					timeError = true;
-				}else{
-					if(startYear == endYear && startMonth == endMonth){
-						// 对周的判定很麻烦
-					}
 				}
+
 				if(timeError){
 					canSubmit = false;
 					noty({"text":"起始时间不得晚于结束时间",type:"error",layout:"topCenter"});

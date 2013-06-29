@@ -10,4 +10,12 @@ public enum GenderEnum {
     public String getDescription() {
         return util.getProperty(this.toString());
     }
+
+	public static GenderEnum fromDesc(String desc) {
+		for (GenderEnum g : GenderEnum.values()) {
+			if(g.getDescription().equals(desc))
+				return g;
+		}
+		return null;
+	}
 }
