@@ -333,11 +333,11 @@ function docReady(){
 	});
 
 	//uploadify - multiple uploads
-	$('#file_upload').uploadify({
+	/*$('#file_upload').uploadify({
 		'swf'      : 'misc/uploadify.swf',
 		'uploader' : 'misc/uploadify.php'
 		// Put your options here
-	});
+	});*/
 
 	//gallery controlls container animation
 	$('ul.gallery li').hover(function(){

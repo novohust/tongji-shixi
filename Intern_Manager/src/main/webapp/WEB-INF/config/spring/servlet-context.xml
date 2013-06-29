@@ -15,22 +15,26 @@
 	<annotation-driven>
 		<message-converters register-defaults="true">
 			<!-- @ResponseBody乱码问题，将StringHttpMessageConverter的默认编码设为UTF-8 -->
-			<beans:bean
-				class="org.springframework.http.converter.StringHttpMessageConverter">
+			<beans:bean class="org.springframework.http.converter.StringHttpMessageConverter">
 				<beans:constructor-arg value="UTF-8" />
 			</beans:bean>
 			<!-- Hibernate lazy vs jackson问题 -->
 			<!-- 默认是utf-8编码，不需要额外指定，不像StringHttpMessageConverter. -->
-			<beans:bean
-				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+			<beans:bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
 				<beans:property name="objectMapper">
 					<beans:bean class="org.hustsse.cloud.utils.HibernateAwareObjectMapper" />
 				</beans:property>
+				<beans:property name="supportedMediaTypes">
+	                <beans:list>
+	                    <beans:value>application/json</beans:value>
+	                    <beans:value>text/json</beans:value>
+	                </beans:list>
+            	</beans:property>
 			</beans:bean>
 		</message-converters>
 	</annotation-driven>
 
-	<!-- 自动扫描且只扫描@Controller -->
+	<!-- 自动扫描且只扫描@Controller & @ControllerAdvice -->
 	<context:component-scan base-package="org.hustsse.cloud"
 		use-default-filters="false">
 		<context:include-filter type="annotation"

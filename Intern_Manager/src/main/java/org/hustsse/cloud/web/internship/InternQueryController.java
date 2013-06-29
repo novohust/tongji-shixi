@@ -51,27 +51,25 @@ public class InternQueryController {
 			pageNum = 1;
 		if (pageSize == null || pageSize <= 0)
 			pageSize = 10;
-		Page<Internship> page = internshipService.findByConditions(internship, pageNum, pageSize, startYear, startMonth, startWeek,
-				endYear, endMonth, endWeek);
+		Page<Internship> page = internshipService.findByConditions(internship, pageNum, pageSize, startYear, startMonth,
+				endYear, endMonth);
 		if (page != null && page.getTotalPages() < pageNum) {
-			page = internshipService.findByConditions(internship, (int) page.getTotalPages(), pageSize, startYear, startMonth, startWeek,
-					endYear, endMonth, endWeek);
+			page = internshipService.findByConditions(internship, (int) page.getTotalPages(), pageSize, startYear, startMonth,
+					endYear, endMonth);
 		}
 		map.put("page", page);
 		map.put("startYear", startYear);
 		map.put("startMonth", startMonth);
-		map.put("startWeek", startWeek);
 		map.put("endYear", endYear);
 		map.put("endMonth", endMonth);
-		map.put("endWeek", endWeek);
 		return "intern-query";
 	}
 
 	@RequestMapping(value = "/export-excel")
-	public ModelAndView export(ModelMap map, Internship internship, Integer startYear, Integer startMonth, WeekEnum startWeek, Integer endYear,
-			Integer endMonth, WeekEnum endWeek) {
-		Page<Internship> page = internshipService.findByConditions(internship, 1, Integer.MAX_VALUE, startYear, startMonth, startWeek,
-				endYear, endMonth, endWeek);
+	public ModelAndView export(ModelMap map, Internship internship, Integer startYear, Integer startMonth, Integer endYear,
+			Integer endMonth) {
+		Page<Internship> page = internshipService.findByConditions(internship, 1, Integer.MAX_VALUE, startYear, startMonth,
+				endYear, endMonth);
 		map.put("interns", page.getResult());
 		return new ModelAndView(new InternExportExcelView(), map);
 	}

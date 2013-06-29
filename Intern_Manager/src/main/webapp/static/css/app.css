@@ -1,4 +1,4 @@
-.btn-mini [class^="icon-"], .btn-mini [class*=" icon-"] {
+.btn-mini [class ^="icon-"],.btn-mini [class *=" icon-"] {
 	margin-top: 1px;
 	margin-left: -3px;
 	margin-right: 2px;
@@ -115,18 +115,36 @@ table .center {
 #data-man-nav-wapper {
 	text-align: center;
 }
-#data-man-nav-wapper a.btn{
-	font-size:12px!important;
+
+#data-man-nav-wapper a.btn {
+	font-size: 12px !important;
 }
 
-.modal-body em{
-	font-weight:bold;
-	margin:0 3px;
+.modal-body em {
+	font-weight: bold;
+	margin: 0 3px;
 }
-.fileupload-preview,.popover-content img.avatar{
-	max-width: 150px; max-height: 150px; line-height: 20px;
+
+.fileupload-preview,.popover-content img.avatar {
+	max-width: 150px;
+	max-height: 150px;
+	line-height: 20px;
 }
-.popover-content img.avatar{border-radius:6px;}
-.tip-thumbnail{
-	width: 150px; height: 150px;
+
+.popover-content img.avatar {
+	border-radius: 6px;
+}
+
+.tip-thumbnail {
+	width: 150px;
+	height: 150px;
+}
+
+/*登录页*/
+div.center,p.center,img.center {
+	margin-left: auto !important;
+	margin-right: auto !important;
+	float: none !important;
+	display: block;
+	text-align: center;
 }

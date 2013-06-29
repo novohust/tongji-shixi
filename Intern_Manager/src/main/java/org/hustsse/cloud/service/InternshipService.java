@@ -1,11 +1,13 @@
 package org.hustsse.cloud.service;
 
+import java.awt.image.RescaleOp;
 import java.util.List;
 
 import ognl.Ognl;
 import ognl.OgnlException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.xmlbeans.impl.xb.xsdschema.RestrictionDocument.Restriction;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
@@ -15,6 +17,8 @@ import org.hustsse.cloud.dao.base.Page;
 import org.hustsse.cloud.entity.Internship;
 import org.hustsse.cloud.entity.Teacher;
 import org.hustsse.cloud.enums.WeekEnum;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +50,7 @@ public class InternshipService {
 		}
 	}
 
-	public Page<Internship> findByConditions(Internship query, Integer pageNum, Integer pageSize, Integer startYear, Integer startMonth,
-			WeekEnum startWeek, Integer endYear, Integer endMonth, WeekEnum endWeek) {
+	public Page<Internship> findByConditions(Internship query, Integer pageNum, Integer pageSize, Integer startYear, Integer startMonth, Integer endYear, Integer endMonth) {
 		// Criteria的组装
 		Criteria c = internshipDao.createCriteria();
 		c.createAlias("teacherTeam", "tt").createAlias("tt.area", "a").createAlias("a.department", "d")
@@ -76,6 +79,21 @@ public class InternshipService {
 			addLikeByProperty(query, "student.name", "s.name", c, MatchMode.ANYWHERE);
 			addLikeByProperty(query, "student.stuNo", "s.stuNo", c, MatchMode.ANYWHERE);
 			addLikeByProperty(query, "student.mentor", "s.mentor", c, MatchMode.ANYWHERE);
+		}
+		// 时间
+		// 开始时间
+		if(startYear != null && startMonth != null) {
+			c.add(Restrictions.or(
+					Restrictions.and(Restrictions.eq("year", startYear),Restrictions.ge("month", startMonth)),	// 同一年>=月份
+					Restrictions.gt("year", startYear)	// >年份
+					));
+		}
+		// 结束时间
+		if(endYear != null && endMonth != null) {
+			c.add(Restrictions.or(
+					Restrictions.and(Restrictions.eq("year", endYear),Restrictions.le("month", endMonth)),	// 同一年<=月份
+					Restrictions.lt("year", endYear)	// <年份
+					));
 		}
 
 		// 查询

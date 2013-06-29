@@ -94,4 +94,13 @@ public class TeacherTeamService {
 		teacherTeamDao.findPage(page, c);
 		return page;
 	}
+
+	public boolean isNameUsed(Long areaId, String name) {
+		TeacherTeam t = teacherTeamDao.findUnique("from TeacherTeam where area.id = ? and name = ?",areaId,name);
+		return t != null;
+	}
+
+	public TeacherTeam findByAreaDeptSSName(String teamName, String areaName, String deptName, String ssName) {
+		return teacherTeamDao.findUnique("from TeacherTeam tt join fetch tt.area a join fetch a.department d join fetch d.secondarySubject ss where tt.name = ? and a.name = ? and d.name = ? and ss.name = ?",teamName,areaName,deptName,ssName);
+	}
 }

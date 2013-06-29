@@ -7,8 +7,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.hustsse.cloud.dao.base.Page;
 import org.hustsse.cloud.entity.SecondarySubject;
 import org.hustsse.cloud.entity.Teacher;
-import org.hustsse.cloud.entity.TeacherTeam;
-import org.hustsse.cloud.enums.GenderEnum;
 import org.hustsse.cloud.service.SecondarySubjectService;
 import org.hustsse.cloud.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;

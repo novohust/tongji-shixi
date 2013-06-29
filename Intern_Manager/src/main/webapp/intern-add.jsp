@@ -189,11 +189,6 @@
 			</div>
 			<!-- end: Content -->
 
-		<div class="alert alert-error no-record-error hide">
-			<button data-dismiss="alert" class="close" type="button">×</button>
-			尚未添加考勤记录！
-		</div>
-
 		<div class="modal hide fade" id="myModal">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal">x</button>
@@ -209,9 +204,9 @@
 		</div>
 
 		<%@ include file="/common/footer.jsp"%>
-	</div>
+		</div>
 	<!--/.fluid-container-->
-
+	</div>
 	<script id="tr-template" type="text/html">
 		<tr class="animated fadeIn intern-tr">
 			<td><@=data.student.name@></td>

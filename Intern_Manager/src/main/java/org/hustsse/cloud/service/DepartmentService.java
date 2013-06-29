@@ -74,4 +74,14 @@ public class DepartmentService {
 	public List<Department> findAll() {
 		return departmentDao.getAll();
 	}
+
+	public boolean isNameUsed(Long ssId, String name) {
+		Department d = departmentDao.findUnique("from Department where secondarySubject.id = ? and name = ?",ssId,name);
+		return d != null;
+	}
+
+	public Department findByDeptAndSSName(String ssName, String deptName) {
+		Department d = departmentDao.findUnique("from Department d join fetch d.secondarySubject s where s.name = ? and d.name = ?",ssName,deptName);
+		return d;
+	}
 }
