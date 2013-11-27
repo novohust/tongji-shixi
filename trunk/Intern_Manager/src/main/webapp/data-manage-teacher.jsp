@@ -127,6 +127,7 @@
 													<th>二级学科</th>
 													<th>性别</th>
 													<th>出生日期</th>
+													<th>联系方式</th>
 													<th>操作</th>
 												</tr>
 											</thead>
@@ -144,6 +145,7 @@
 														<td>${teacher.teacherTeam.area.department.secondarySubject.name}</td>
 														<td>${teacher.gender.description}</td>
 														<td><fmt:formatDate value="${teacher.birthday}" type="date" pattern="yyyy-MM-dd"/></td>
+														<td>${teacher.phone}</td>
 														<td>
 															<a class="btn btn-primary btn-mini btn-edit" teacher-id="${teacher.id}"><i class="icon-edit icon-white"></i>编辑</a>
 															<a class="btn btn-danger btn-mini btn-delete-one" teacher-id="${teacher.id}" teacher-no="${teacher.teacherNo}" teacher-name="${teacher.name}"><i class="icon-trash icon-white"></i>删除</a></td>
@@ -277,6 +279,15 @@
 											<input name="birthday" type="text" data-mask="9999-99-99" yearRange="1970:2000" class="input-large datepicker-dropdown-year-month validate[custom[date]]" placeholder="格式 1983-01-02">
 										</div>
 									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">联系方式</label>
+										<div class="controls">
+											<input name="phone" type="text"
+												class="input-large"	maxlength="20" placeholder="请输入联系方式">
+										</div>
+									</div>
+
 									<div class="form-actions">
 										<button type="submit" class="btn btn-primary">确定</button>
 										<button type="reset" class="btn">清空</button>
@@ -416,6 +427,14 @@
 														value="<@=moment(teacher.birthday).format('YYYY-MM-DD')@>"
 													<@}@>
 												type="text" yearRange="1970:2000" class="input-medium datepicker-dropdown-year-month validate[custom[date]]" placeholder="格式 1983-01-02">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">联系方式</label>
+										<div class="controls">
+											<input name="phone" type="text" value="<@=teacher.phone@>"
+												class="input-medium"	maxlength="20" placeholder="请输入联系方式">
 										</div>
 									</div>
 

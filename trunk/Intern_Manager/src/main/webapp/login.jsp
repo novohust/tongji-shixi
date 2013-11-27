@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
 
-<c:set var="pageTitle" value="登录" scope="page"></c:set>
+<c:set var="pageTitle" value="同济医学院考勤管理系统" scope="page"></c:set>
 
 <!DOCTYPE html>
 <html lang="zh-CN">

@@ -19,6 +19,7 @@ public class Teacher extends IdEntity {
 	private String teacherNo;// 工号
 	private GenderEnum gender;
 	private Date birthday;
+	private String phone;
 
 	private TeacherTeam teacherTeam;
 
@@ -65,4 +66,11 @@ public class Teacher extends IdEntity {
 		this.teacherTeam = teacherTeam;
 	}
 
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 }

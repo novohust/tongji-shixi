@@ -10,8 +10,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.hustsse.cloud.entity.Major;
 import org.hustsse.cloud.entity.Student;
+import org.hustsse.cloud.enums.EnrollTypeEnum;
 import org.hustsse.cloud.enums.GenderEnum;
 import org.hustsse.cloud.enums.StuTypeEnum;
+import org.hustsse.cloud.enums.TrueFalseEnum;
 import org.hustsse.cloud.service.MajorService;
 import org.hustsse.cloud.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +69,7 @@ public class StudentRowImporter extends RowImporter {
 
 		//出生日期
 		Cell birthCell = r.getCell(3);
-		if(birthCell != null) {
+		if(birthCell != null && !isContentEmpty(birthCell)) {
 			if(birthCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(birthCell)) {
 				double d = birthCell.getNumericCellValue();
 	            Date date = DateUtil.getJavaDate(d);
@@ -95,10 +97,10 @@ public class StudentRowImporter extends RowImporter {
 
 		//导师
 		Cell mentorCell = r.getCell(5);
-		if (!valAnyEmptyCell(session, "导师不能为空", i, mentorCell))
-			return;
-		mentorCell.setCellType(Cell.CELL_TYPE_STRING);
-		s.setMentor(mentorCell.getStringCellValue());
+		if (mentorCell != null && !isContentEmpty(mentorCell)) {
+			mentorCell.setCellType(Cell.CELL_TYPE_STRING);
+			s.setMentor(mentorCell.getStringCellValue());
+		}
 
 		// 年级
 		Cell gradeCell = r.getCell(6);
@@ -132,9 +134,59 @@ public class StudentRowImporter extends RowImporter {
 		}
 		s.setType(t);
 
+		// 证件号
+		Cell identityNoCell = r.getCell(9);
+		if (identityNoCell != null && !isContentEmpty(identityNoCell)) {
+			identityNoCell.setCellType(Cell.CELL_TYPE_STRING);
+			s.setIdentityNo(identityNoCell.getStringCellValue());
+		}
+
+		// 毕业学校
+		Cell schoolCell = r.getCell(10);
+		if (schoolCell != null && !isContentEmpty(schoolCell)) {
+			schoolCell.setCellType(Cell.CELL_TYPE_STRING);
+			s.setGraduateSchool(schoolCell.getStringCellValue());
+		}
+
+		// 录取类别
+		Cell enrollTypeCell = r.getCell(11);
+		if (!valAnyEmptyCell(session, "录取类别不能为空", i, enrollTypeCell))
+			return;
+		enrollTypeCell.setCellType(Cell.CELL_TYPE_STRING);
+		EnrollTypeEnum e = EnrollTypeEnum.fromDesc(enrollTypeCell.getStringCellValue());
+		if(e == null) {
+			addErrorTip(session, "不合法的录取类别", i);
+			return;
+		}
+		s.setEnrollType(e);
+
+		// 医师执照
+		Cell docQuaCell = r.getCell(12);
+			if (docQuaCell != null && !isContentEmpty(docQuaCell)) {
+				docQuaCell.setCellType(Cell.CELL_TYPE_STRING);
+			TrueFalseEnum tfe = TrueFalseEnum.fromDesc(docQuaCell.getStringCellValue());
+			if(tfe == null) {
+				addErrorTip(session, "\"医师执照\"的值不合法", i);
+				return;
+			}
+			s.setDocQualification(tfe);
+		}
+
+		// 医师注册
+		Cell docRegCell = r.getCell(13);
+		if (docRegCell != null && !isContentEmpty(docRegCell)) {
+			docRegCell.setCellType(Cell.CELL_TYPE_STRING);
+			TrueFalseEnum tfe = TrueFalseEnum.fromDesc(docRegCell.getStringCellValue());
+			if(tfe == null ) {
+				addErrorTip(session, "\"医师注册\"的值不合法", i);
+				return;
+			}
+			s.setDocRegister(tfe);
+		}
+
 		// 描述
-		Cell desCell = r.getCell(9);
-		if(desCell != null) {
+		Cell desCell = r.getCell(14);
+		if(desCell != null && !isContentEmpty(desCell)) {
 			desCell.setCellType(Cell.CELL_TYPE_STRING);
 			s.setDescription(desCell.getStringCellValue());
 		}

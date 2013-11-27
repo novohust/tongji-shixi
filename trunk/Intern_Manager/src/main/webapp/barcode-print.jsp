@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ include file="/common/taglibs.jsp"%>
-<c:set var="pageTitle" value="考勤录入" scope="page"></c:set>
+<c:set var="pageTitle" value="条码打印" scope="page"></c:set>
 <c:set var="weekEnums" value="<%=WeekEnum.values()%>"/>
 <c:set var="printTypeEnums" value="<%=PrintTypeEnum.values()%>"/>
 <c:set var="notPagedEnum" value="<%=PrintTypeEnum.NotPaged%>"/>
@@ -147,7 +147,7 @@
 														</td>
 														<td>${student.stuNo}</td>
 														<td>
-															<a href="#">${student.name}</a>
+															<a href="#" title="点击查看详细信息" data-toggle="tooltip" class="stu-detail-link" stu-id="${student.id}">${student.name}</a>
 														</td>
 														<td>${student.type.description}</td>
 														<td>${student.major.name}</td>
@@ -298,6 +298,207 @@
 		</div>
 	<!--/.fluid-container-->
 	</div>
+
+	<div class="modal hide fade in" id="detailModal">
+		<div class="modal-header">
+			<button data-dismiss="modal" class="close" type="button">×</button>
+			<h3>查看学生</h3>
+		</div>
+		<form style="margin: 0" class="form-horizontal">
+			<div class="modal-body">
+			</div>
+		</form>
+	</div>
+
+
+	<div class="hide">
+	<select name="type">
+		<c:forEach var="t" items="${stuTypeEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="gender">
+		<c:forEach var="g" items="${genderEnums}">
+			<option value="${g}">${g.description}</option>
+		</c:forEach>
+	</select>
+	</div>
+
+	<!-- 查看学生详细信息内部模板 -->
+	<script id="detail-modal-temp" type="text/html">
+			<fieldset>
+									<div class="control-group">
+										<label for="" class="control-label">学号</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.stuNo@>" name="stuNo" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">姓名</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.name@>" name="name" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">性别</label>
+										<div class="controls">
+											<select disabled="disabled" rel="uniform" class="input-mini">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=gender]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.gender))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">出生日期</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=moment(student.birthday).format('YYYY-MM-DD')@>" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">专业</label>
+										<div class="controls">
+											<select disabled="disabled" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name="major.id"]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.major.id))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">导师</label>
+										<div class="controls">
+											<input disabled="disabled" value="<@=student.mentor@>" name="mentor" type="text" class="input-large">
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">年级</label>
+										<div class="controls"><input disabled="disabled" value="<@=student.grade@>" name="grade" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">班级</label>
+										<div class="controls"><input disabled="disabled" value="<@=(student.clazz<10)?"0"+(student.clazz):student.clazz@>" name="clazz" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">类别</label>
+										<div class="controls">
+											<select disabled="disabled" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=type]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.type))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">照片</label>
+										<div class="controls">
+											  	<div class="fileupload-new thumbnail tip-thumbnail">
+											  		<img src="<@=$.appCtx+(student.avatar?student.avatar:"/static/img/default_avatar.gif")@>?x=<@=Math.random()@>" />
+											 	</div>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">民族</label>
+										<div class="controls"><input value="<@=student.race@>" disabled="disabled" name="race" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">证件号码</label>
+										<div class="controls"><input value="<@=student.identityNo@>" disabled="disabled" name="identityNo" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">毕业学校</label>
+										<div class="controls"><input value="<@=student.graduateSchool@>" disabled="disabled" name="graduateSchool" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">录取类别</label>
+										<div class="controls">
+											<select disabled="disabled" name="enrollType" id="" class="input-mini validate[required]" rel="uniform">
+											<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=enrollType]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.enrollType))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生执照</label>
+										<div class="controls">
+											<select disabled="disabled" name="docQualification" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=docQualification]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docQualification))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生注册</label>
+										<div class="controls">
+											<select disabled="disabled" name="docRegister" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=docRegister]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docRegister))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">描述</label>
+										<div class="controls">
+											<textarea disabled="disabled" name="description" maxlength="200" type="text" class="input-xlarge"><@=student.description@></textarea>
+										</div>
+									</div>
+			</fieldset>
+	</script>
+
+	<div class="hide">
+	<select name="type">
+		<c:forEach var="t" items="${stuTypeEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="gender">
+		<c:forEach var="g" items="${genderEnums}">
+			<option value="${g}">${g.description}</option>
+		</c:forEach>
+	</select>
+	<select name="enrollType">
+		<c:forEach var="t" items="${enrollTypes}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="docQualification">
+		<option value=""></option>
+		<c:forEach var="t" items="${trueFalseEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="docRegister">
+		<option value=""></option>
+		<c:forEach var="t" items="${trueFalseEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	</div>
+
 	<!-- start: JavaScript-->
 	<%@ include file="/common/import-js.jsp"%>
 	<!-- end: JavaScript-->
@@ -346,7 +547,7 @@
 		var action = form.attr('action');
 		form.attr('action',$.appCtx + "/barcode-print/preview").attr("target","preview").submit();
 		//还原分页form属性
-		actiom.attr({'action':action,'target':'_self'});
+		form.attr({'action':action,'target':'_self'});
 	}
 
 		$(function(){
@@ -376,6 +577,25 @@
 					ranges.push($(e).serializeJson());
 				});
 				$(this).find('input[name=ranges]').val(JSON.stringify(ranges));
+			});
+
+			// 查看学生详细信息
+			$('.stu-detail-link').click(function(){
+				self = $(this);
+				$.get($.appCtx+ "/data-manage/student/"+ self.attr('stu-id'),function(data) {
+						if (data) {
+							$('#detailModal .modal-body').empty().html(template.render('detail-modal-temp',{
+								"student" : data,
+								"$":$,
+								"moment":moment,
+								'Math':Math
+							})).find('select[rel="uniform"],input:checkbox, input:radio, input:file')
+								.not('[data-no-uniform="true"],#uniform-is-ajax')
+								.uniform();// uniform化表单元素
+
+							$('#detailModal').modal();
+						}
+				});
 			});
 		});
 	</script>

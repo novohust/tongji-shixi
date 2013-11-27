@@ -2,10 +2,10 @@
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
-				<a class="brand" href="index.html"><span>考勤管理系统</span></a>
+				<a class="brand" href="#"><img style="width: 300px;margin-top: 0px;" src="${ctx}/static/img/tongji.png"/></a>
 
 				<!-- start: Header Menu -->
-				<div class="nav-no-collapse header-nav">
+				<div class="nav-no-collapse header-nav" style="margin-top: 22px;">
 					<ul class="nav pull-right">
 						<!-- end: User Dropdown -->
 						<li title="退出登录">

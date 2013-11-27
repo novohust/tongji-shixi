@@ -67,7 +67,7 @@ public class TeacherRowImporter extends RowImporter {
 
 		//出生日期
 		Cell birthCell = r.getCell(3);
-		if(birthCell != null) {
+		if(birthCell != null && !isContentEmpty(birthCell)) {
 			if(birthCell.getCellType() == Cell.CELL_TYPE_NUMERIC && DateUtil.isCellDateFormatted(birthCell)) {
 				double d = birthCell.getNumericCellValue();
 	            Date date = DateUtil.getJavaDate(d);
@@ -104,6 +104,13 @@ public class TeacherRowImporter extends RowImporter {
 			return;
 		}
 		t.setTeacherTeam(team);
+
+		// 联系方式
+		Cell phoneCell = r.getCell(8);
+		if (phoneCell != null && !isContentEmpty(phoneCell)) {
+			phoneCell.setCellType(Cell.CELL_TYPE_STRING);
+			t.setPhone(phoneCell.getStringCellValue());
+		}
 
 		// 保存
 		teacherService.add(t);
