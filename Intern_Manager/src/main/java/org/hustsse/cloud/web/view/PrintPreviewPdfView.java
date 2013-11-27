@@ -2,6 +2,7 @@ package org.hustsse.cloud.web.view;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,13 +13,13 @@ import org.hustsse.cloud.enums.PrintTypeEnum;
 import org.hustsse.cloud.enums.WeekEnum;
 import org.hustsse.cloud.web.print.PrintController.InternRange;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.Barcode128;
 import com.itextpdf.text.pdf.BaseFont;
 import com.itextpdf.text.pdf.PdfContentByte;
@@ -45,22 +46,48 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 	public static final int MONTH_NUM_OF_YEAR = 12;
 	public static final int WEEK_NUM_OF_MONTH = WeekEnum.values().length;
 
+	/* 打印参数 */
+	private static int BAR_HEIGHT;
+	private static int FONT_SIZE;
+	private static int CELL_PADDING_TOP;
+	private static int CELL_PADDING_BOTTOM;
+	private static int CELL_PADDING_RIGHT;
+	private static int CELL_PADDING_LEFT;
+	private static int DESC_SPACING_BEFORE;
+
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 
 		// create font
-		synchronized (PrintPreviewPdfView.class) {
-			if (bf == null) {
-				Resource font = (Resource) model.get("font");
-				bf = BaseFont.createFont(font.getFile().getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+		if(bf == null) {
+			synchronized (PrintPreviewPdfView.class) {
+				if (bf == null) {
+					Properties config = (Properties) model.get("viewConfig");
+					ResourceLoader resourceLoader = (ResourceLoader) model.get("resourceLoader");
+					// font
+					Resource font = resourceLoader.getResource(config.getProperty("pdf_font_file"));
+					bf = BaseFont.createFont(font.getFile().getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
+
+					// 其他参数
+					BAR_HEIGHT = Integer.parseInt(config.getProperty("pdf_bar_height"));
+					FONT_SIZE = Integer.parseInt(config.getProperty("pdf_font_size"));
+					CELL_PADDING_TOP = Integer.parseInt(config.getProperty("pdf_cell_padding_top"));
+					CELL_PADDING_BOTTOM = Integer.parseInt(config.getProperty("pdf_cell_padding_bottom"));
+					CELL_PADDING_RIGHT = Integer.parseInt(config.getProperty("pdf_cell_padding_right"));
+					CELL_PADDING_LEFT = Integer.parseInt(config.getProperty("pdf_cell_padding_left"));
+					DESC_SPACING_BEFORE = Integer.parseInt(config.getProperty("pdf_desc_spacing_before"));
+				}
 			}
 		}
+
+		// 打印参数
+
 		PdfContentByte cb = writer.getDirectContent();
 
 		// set up barcode
 		Barcode128 code128 = new Barcode128();
-		code128.setBarHeight(31);
+		code128.setBarHeight(BAR_HEIGHT);
 		code128.setFont(bf);
 
 		// create table
@@ -108,21 +135,21 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 				}
 			}
 			// 输出完一个学生的条码后判断是否需要分页
-			if (PrintTypeEnum.PagedByStu == (PrintTypeEnum) model.get("printType") && sum % 32 != 0 && j != students.size() - 1) {
-				fixTable(table, sum);
+			if (PrintTypeEnum.PagedByStu == (PrintTypeEnum) model.get("printType") && sum % (COL * ROW) != 0 && j != students.size() - 1) {
+				addPaddingForPaper(table, sum);
 				document.add(table);
 				// 重新创建一个table并另起一页
-				table = new PdfPTable(3);
+				table = new PdfPTable(COL);
 				table.setWidthPercentage(100);
 				document.newPage();
 				sum = 0;
 			}
 		}
-		fixTable(table,sum);
+		addPaddingForPaper(table,sum);
 		document.add(table);
 	}
 
-	private void fixTable(PdfPTable table, int sum) {
+	private void addPaddingForPaper(PdfPTable table, int sum) {
 		// 分页前补全空白cell
 		if(sum % COL != 0) {
 			for (int i = 0; i < COL - sum % COL; i++) {
@@ -134,18 +161,18 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 	private PdfPCell createCell(PdfContentByte cb, Barcode128 code128, Student s, int year, int month, WeekEnum week) {
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(Rectangle.NO_BORDER);
-		cell.setPaddingLeft(10);
-		cell.setPaddingRight(10);
-		cell.setPaddingBottom(25);
-		cell.setPaddingTop(25);
+		cell.setPaddingLeft(CELL_PADDING_LEFT);
+		cell.setPaddingRight(CELL_PADDING_RIGHT);
+		cell.setPaddingBottom(CELL_PADDING_BOTTOM);
+		cell.setPaddingTop(CELL_PADDING_TOP);
 		String code = StringUtils.join(new Object[] { s.getId(), year, month, week.value()}, ",");
 		code128.setCode(code);
 		code128.setAltText(StringUtils.join(new Object[] { s.getName(), s.getMajor().getName(),year, month, week.ordinal()}, " "));
 		cell.addElement(code128.createImageWithBarcode(cb, null, null));
 
-		Font paraFont = new Font(bf, 11, Font.NORMAL);
+		Font paraFont = new Font(bf, FONT_SIZE, Font.NORMAL);
 		Paragraph p = new Paragraph(s.getName() + " - " + s.getMajor().getName(), paraFont);
-		p.setSpacingBefore(-3);
+		p.setSpacingBefore(DESC_SPACING_BEFORE);
 		//cell.addElement(p);
 		return cell;
 	}

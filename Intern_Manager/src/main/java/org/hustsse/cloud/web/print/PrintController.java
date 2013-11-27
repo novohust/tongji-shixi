@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hustsse.cloud.dao.base.Page;
@@ -16,6 +17,7 @@ import org.hustsse.cloud.service.StudentService;
 import org.hustsse.cloud.web.view.PrintPreviewPdfView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,6 +37,8 @@ public class PrintController {
 	StudentService studentService;
 	@Autowired
 	MajorService majorService;
+	@Autowired
+	ApplicationContext appContext;
 
 	static ObjectMapper mapper = new ObjectMapper();
 
@@ -90,8 +94,8 @@ public class PrintController {
 		return rangesList;
 	}
 
-	@Value("#{mvcProp.font_file}")
-	Resource font;
+	@Value("#{mvcProp}")
+	private Properties viewConfig;
 
 	@RequestMapping(value = "/preview")
 	public ModelAndView preview(ModelMap map, Student query, PrintTypeEnum printType, String ranges, Boolean checkQueryAll, String stuIds)
@@ -117,7 +121,8 @@ public class PrintController {
 		List<InternRange> rangesList = fromJson(ranges);
 		map.put("ranges", rangesList);
 		map.put("printType", printType);
-		map.put("font", font);
+		map.put("viewConfig", viewConfig);
+		map.put("resourceLoader", appContext);
 		return new ModelAndView(new PrintPreviewPdfView(), map);
 	}
 
