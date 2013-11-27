@@ -13,8 +13,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hustsse.cloud.enums.EnrollTypeEnum;
 import org.hustsse.cloud.enums.GenderEnum;
 import org.hustsse.cloud.enums.StuTypeEnum;
+import org.hustsse.cloud.enums.TrueFalseEnum;
 
 @Entity
 @Table
@@ -29,6 +31,12 @@ public class Student extends IdEntity {
 	private StuTypeEnum type;
 	private GenderEnum gender;
 	private String avatar;
+	private String race;
+	private String identityNo;// 证件号
+	private String graduateSchool; // 毕业学校
+	private EnrollTypeEnum enrollType; // 录取类别
+	private TrueFalseEnum docQualification; // 是否有医师资格
+	private TrueFalseEnum docRegister; // 是否医师注册
 	private String description;
 
 	private Major major;
@@ -124,6 +132,56 @@ public class Student extends IdEntity {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getRace() {
+		return race;
+	}
+
+	public void setRace(String race) {
+		this.race = race;
+	}
+
+	public String getIdentityNo() {
+		return identityNo;
+	}
+
+	public void setIdentityNo(String identityNo) {
+		this.identityNo = identityNo;
+	}
+
+	public String getGraduateSchool() {
+		return graduateSchool;
+	}
+
+	public void setGraduateSchool(String graduateSchool) {
+		this.graduateSchool = graduateSchool;
+	}
+
+	public EnrollTypeEnum getEnrollType() {
+		return enrollType;
+	}
+
+	public void setEnrollType(EnrollTypeEnum enrollType) {
+		this.enrollType = enrollType;
+	}
+
+	@Enumerated(EnumType.STRING)
+	public TrueFalseEnum getDocQualification() {
+		return docQualification;
+	}
+
+	public void setDocQualification(TrueFalseEnum docQualification) {
+		this.docQualification = docQualification;
+	}
+
+	@Enumerated(EnumType.STRING)
+	public TrueFalseEnum getDocRegister() {
+		return docRegister;
+	}
+
+	public void setDocRegister(TrueFalseEnum docRegister) {
+		this.docRegister = docRegister;
 	}
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "student", cascade = { CascadeType.REMOVE })

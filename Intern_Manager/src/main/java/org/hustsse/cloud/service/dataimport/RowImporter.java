@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -32,9 +33,17 @@ public abstract class RowImporter {
 		return true;
 	}
 
+	protected boolean isContentEmpty(Cell c) {
+		int type = c.getCellType();
+		c.setCellType(Cell.CELL_TYPE_STRING);
+		String content = c.getStringCellValue();
+		c.setCellType(type);
+		return StringUtils.isBlank(content);
+	}
+
 	protected boolean valAnyEmptyCell(HttpSession session, String tip, int i, Cell... c) {
 		for (Cell cell : c) {
-			if (cell == null) {
+			if (cell == null || isContentEmpty(cell)) {
 				addErrorTip(session, tip, i);
 				return false;
 			}

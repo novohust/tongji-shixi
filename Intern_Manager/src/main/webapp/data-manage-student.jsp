@@ -75,14 +75,14 @@
 									<div class="control-group">
 										<label for="" class="control-label">年级</label>
 										<div class="controls">
-											<input  data-mask="9999" value="${query.grade}" name="grade" type="text" class="input-medium" placeholder="请输入学生年级">
+											<input  data-mask="9999" value="${query.grade}" name="grade" type="text" class="input-medium" placeholder="四位数字，如：2011">
 										</div>
 									</div>
 
 									<div class="control-group">
 										<label for="" class="control-label">班级</label>
 										<div class="controls">
-											<input type="text" data-mask="99" value="${query.clazz}" name="clazz" class="input-medium" placeholder="请输入学生班级">
+											<input type="text" data-mask="99" value="${query.clazz}" name="clazz" class="input-medium" placeholder="格式为两位数字，如：02">
 										</div>
 									</div>
 
@@ -137,6 +137,12 @@
 													<th>性别</th>
 													<th>导师</th>
 													<th>出生日期</th>
+													<th>民族</th>
+													<th>证件号码</th>
+													<th>毕业学校</th>
+													<th>录取类别</th>
+													<th>医师资格</th>
+													<th>医师注册</th>
 													<th>描述</th>
 													<th style="width:102px">操作</th>
 												</tr>
@@ -176,7 +182,14 @@
 														<td>${student.gender.description}</td>
 														<td>${student.mentor}</td>
 														<td><fmt:formatDate value="${student.birthday}" type="date" pattern="yyyy-MM-dd"/></td>
+														<td>${student.race}</td>
+														<td>${student.identityNo}</td>
+														<td>${student.graduateSchool}</td>
+														<td>${student.enrollType.description}</td>
+														<td>${student.docQualification ne null ? student.docQualification.description:""}</td>
+														<td>${student.docRegister ne null ? student.docRegister.description : ""}</td>
 														<td>
+															<c:if test="${!empty student.description}">
 															<div
 															style="width:150px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;cursor:pointer;"
 															data-toggle="popover"
@@ -185,6 +198,7 @@
 															data-content="<div>${student.description}</div>">
 																${student.description}
 															</div>
+															</c:if>
 														</td>
 														<td>
 															<a class="btn btn-primary btn-mini btn-edit" student-id="${student.id}"><i class="icon-edit icon-white"></i>编辑</a>
@@ -295,17 +309,17 @@
 
 									<div class="control-group">
 										<label for="" class="control-label">导师</label>
-										<div class="controls"><input name="mentor" type="text" class="input-large validate[required]" placeholder="请输入导师姓名"></div>
+										<div class="controls"><input name="mentor" type="text" class="input-large" placeholder="请输入导师姓名"></div>
 									</div>
 
 									<div class="control-group">
 										<label for="" class="control-label">年级</label>
-										<div class="controls"><input name="grade" type="text" class="input-large validate[required]" placeholder="请输入年级" data-mask="9999"></div>
+										<div class="controls"><input name="grade" type="text" class="input-large validate[required]" placeholder="格式为4位数字，如：2011" data-mask="9999"></div>
 									</div>
 
 									<div class="control-group">
 										<label for="" class="control-label">班级</label>
-										<div class="controls"><input name="clazz" type="text" class="input-large validate[required]" placeholder="请输入班级" data-mask="99"></div>
+										<div class="controls"><input name="clazz" type="text" class="input-large validate[required]" placeholder="格式为两位数字，如：02" data-mask="99"></div>
 									</div>
 
 									<div class="control-group">
@@ -336,6 +350,56 @@
 													<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">取消</a>
 												</div>
 											</div>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">民族</label>
+										<div class="controls"><input name="race" type="text" class="input-large" placeholder="如：汉族"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">证件号码</label>
+										<div class="controls"><input name="identityNo" type="text" class="input-large" placeholder="请输入证件号"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">毕业学校</label>
+										<div class="controls"><input name="graduateSchool" type="text" class="input-large" placeholder="请输入毕业学校"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">录取类别</label>
+										<div class="controls">
+											<select name="enrollType" id="" class="input-mini validate[required]" rel="uniform">
+												<c:forEach var="t" items="${enrollTypes}">
+													<option value="${t}">${t.description}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生执照</label>
+										<div class="controls">
+											<select name="docQualification" id="" class="input-mini" rel="uniform">
+												<option value=""></option>
+												<c:forEach var="t" items="${trueFalseEnums}">
+													<option value="${t}">${t.description}</option>
+												</c:forEach>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生注册</label>
+										<div class="controls">
+											<select name="docRegister" id="" class="input-mini" rel="uniform">
+												<option value=""></option>
+												<c:forEach var="t" items="${trueFalseEnums}">
+													<option value="${t}">${t.description}</option>
+												</c:forEach>
+											</select>
 										</div>
 									</div>
 
@@ -447,17 +511,17 @@
 
 									<div class="control-group">
 										<label for="" class="control-label">导师</label>
-										<div class="controls"><input value="<@=student.mentor@>" name="mentor" type="text" class="input-large validate[required]" placeholder="请输入导师姓名"></div>
+										<div class="controls"><input value="<@=student.mentor@>" name="mentor" type="text" class="input-large" placeholder="请输入导师姓名"></div>
 									</div>
 
 									<div class="control-group">
 										<label for="" class="control-label">年级</label>
-										<div class="controls"><input value="<@=student.grade@>" name="grade" type="text" class="input-large validate[required]" placeholder="请输入年级" data-mask="9999"></div>
+										<div class="controls"><input value="<@=student.grade@>" name="grade" type="text" class="input-large validate[required]" placeholder="格式为4位数字，如：2011" data-mask="9999"></div>
 									</div>
 
 									<div class="control-group">
 										<label for="" class="control-label">班级</label>
-										<div class="controls"><input value="<@=(student.clazz<10)?"0"+(student.clazz):student.clazz@>" name="clazz" type="text" class="input-large validate[required]" placeholder="请输入班级" data-mask="99"></div>
+										<div class="controls"><input value="<@=(student.clazz<10)?"0"+(student.clazz):student.clazz@>" name="clazz" type="text" class="input-large validate[required]" placeholder="格式为两位数字，如：02" data-mask="99"></div>
 									</div>
 
 									<div class="control-group">
@@ -489,6 +553,57 @@
 													<a href="#" class="btn fileupload-exists" data-dismiss="fileupload">取消</a>
 												</div>
 											</div>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">民族</label>
+										<div class="controls"><input value="<@=student.race@>" name="race" type="text" class="input-large" placeholder="如：汉族"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">证件号码</label>
+										<div class="controls"><input value="<@=student.identityNo@>" name="identityNo" type="text" class="input-large" placeholder="请输入证件号"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">毕业学校</label>
+										<div class="controls"><input value="<@=student.graduateSchool@>" name="graduateSchool" type="text" class="input-large" placeholder="请输入毕业学校"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">录取类别</label>
+										<div class="controls">
+											<select name="enrollType" id="" class="input-mini validate[required]" rel="uniform">
+											<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('#add-form select[name=enrollType]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.enrollType))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生执照</label>
+										<div class="controls">
+											<select name="docQualification" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('#add-form select[name=docQualification]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docQualification))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生注册</label>
+										<div class="controls">
+											<select name="docRegister" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('#add-form select[name=docRegister]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docRegister))@>
+												<@});@>
+											</select>
 										</div>
 									</div>
 

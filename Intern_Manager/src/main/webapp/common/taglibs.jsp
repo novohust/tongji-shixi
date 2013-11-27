@@ -10,4 +10,6 @@
 <c:set var="genderEnums" value="<%=GenderEnum.values()%>"/>
 <c:set var="stuTypeEnums" value="<%=StuTypeEnum.values()%>"/>
 <c:set var="weekEnums" value="<%=WeekEnum.values()%>"/>
+<c:set var="enrollTypes" value="<%=EnrollTypeEnum.values()%>"/>
+<c:set var="trueFalseEnums" value="<%=TrueFalseEnum.values()%>"/>
 

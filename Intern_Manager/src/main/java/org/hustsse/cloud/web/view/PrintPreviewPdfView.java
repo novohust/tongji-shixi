@@ -34,11 +34,16 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 	}
 
 	private static PdfPCell empty;
-	private static Font f;
+	private static BaseFont bf;
 	{
 		empty = new PdfPCell();
 		empty.setBorder(Rectangle.NO_BORDER);
 	}
+
+	public static final int ROW = 9;
+	public static final int COL = 4;
+	public static final int MONTH_NUM_OF_YEAR = 12;
+	public static final int WEEK_NUM_OF_MONTH = WeekEnum.values().length;
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer, HttpServletRequest request,
@@ -46,10 +51,9 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 
 		// create font
 		synchronized (PrintPreviewPdfView.class) {
-			if (f == null) {
+			if (bf == null) {
 				Resource font = (Resource) model.get("font");
-				BaseFont bf = BaseFont.createFont(font.getFile().getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
-				f = new Font(bf, 12, Font.NORMAL);
+				bf = BaseFont.createFont(font.getFile().getAbsolutePath(), BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);
 			}
 		}
 		PdfContentByte cb = writer.getDirectContent();
@@ -57,10 +61,10 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 		// set up barcode
 		Barcode128 code128 = new Barcode128();
 		code128.setBarHeight(31);
-		code128.setFont(null);
+		code128.setFont(bf);
 
 		// create table
-		PdfPTable table = new PdfPTable(3);
+		PdfPTable table = new PdfPTable(COL);
 		table.setWidthPercentage(100);
 
 		int sum = 0;
@@ -79,11 +83,11 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 				// 周 == 全部：打印4张条码
 				// 周 == 1|2|3|4：打印1张条码
 				if (r.getMonth() == null || r.getMonth() == 0) {
-					for (int i = 1; i <= 12; i++) {
+					for (int i = 1; i <= MONTH_NUM_OF_YEAR; i++) {
 						PdfPCell cell = createCell(cb, code128, s, r.getYear(), i, WeekEnum.All);
 						table.addCell(cell);
 					}
-					sum += 12;
+					sum += MONTH_NUM_OF_YEAR;
 				} else {
 					if (r.getSplitByWeek() == null || !r.getSplitByWeek()) {
 						table.addCell(createCell(cb, code128, s, r.getYear(), r.getMonth(), WeekEnum.All));
@@ -95,7 +99,7 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 									continue;
 								table.addCell(createCell(cb, code128, s, r.getYear(), r.getMonth(), w));
 							}
-							sum += 4;
+							sum += WEEK_NUM_OF_MONTH;
 						} else {
 							table.addCell(createCell(cb, code128, s, r.getYear(), r.getMonth(), r.getWeek()));
 							sum++;
@@ -120,8 +124,8 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 
 	private void fixTable(PdfPTable table, int sum) {
 		// 分页前补全空白cell
-		if(sum % 3 != 0) {
-			for (int i = 0; i < 3 - sum % 3; i++) {
+		if(sum % COL != 0) {
+			for (int i = 0; i < COL - sum % COL; i++) {
 				table.addCell(empty);
 			}
 		}
@@ -130,15 +134,19 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 	private PdfPCell createCell(PdfContentByte cb, Barcode128 code128, Student s, int year, int month, WeekEnum week) {
 		PdfPCell cell = new PdfPCell();
 		cell.setBorder(Rectangle.NO_BORDER);
-		cell.setPaddingLeft(20);
-		cell.setPaddingRight(20);
-		cell.setPaddingBottom(10);
+		cell.setPaddingLeft(10);
+		cell.setPaddingRight(10);
+		cell.setPaddingBottom(25);
+		cell.setPaddingTop(25);
 		String code = StringUtils.join(new Object[] { s.getId(), year, month, week.value()}, ",");
 		code128.setCode(code);
+		code128.setAltText(StringUtils.join(new Object[] { s.getName(), s.getMajor().getName(),year, month, week.ordinal()}, " "));
 		cell.addElement(code128.createImageWithBarcode(cb, null, null));
-		Paragraph p = new Paragraph(s.getName() + " - " + s.getMajor().getName(), f);
+
+		Font paraFont = new Font(bf, 11, Font.NORMAL);
+		Paragraph p = new Paragraph(s.getName() + " - " + s.getMajor().getName(), paraFont);
 		p.setSpacingBefore(-3);
-		cell.addElement(p);
+		//cell.addElement(p);
 		return cell;
 	}
 

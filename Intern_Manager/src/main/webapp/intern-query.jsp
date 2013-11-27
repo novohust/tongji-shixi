@@ -407,8 +407,59 @@
 										<label for="" class="control-label">照片</label>
 										<div class="controls">
 											  	<div class="fileupload-new thumbnail tip-thumbnail">
-											  		<img src="<@=$.appCtx+student.avatar@>?x=<@=Math.random()@>" />
+											  		<img src="<@=$.appCtx+(student.avatar?student.avatar:"/static/img/default_avatar.gif")@>?x=<@=Math.random()@>" />
 											 	</div>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">民族</label>
+										<div class="controls"><input value="<@=student.race@>" disabled="disabled" name="race" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">证件号码</label>
+										<div class="controls"><input value="<@=student.identityNo@>" disabled="disabled" name="identityNo" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">毕业学校</label>
+										<div class="controls"><input value="<@=student.graduateSchool@>" disabled="disabled" name="graduateSchool" type="text" class="input-large"></div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">录取类别</label>
+										<div class="controls">
+											<select disabled="disabled" name="enrollType" id="" class="input-mini validate[required]" rel="uniform">
+											<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=enrollType]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.enrollType))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生执照</label>
+										<div class="controls">
+											<select disabled="disabled" name="docQualification" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=docQualification]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docQualification))@>
+												<@});@>
+											</select>
+										</div>
+									</div>
+
+									<div class="control-group">
+										<label for="" class="control-label">医生注册</label>
+										<div class="controls">
+											<select disabled="disabled" name="docRegister" id="" class="input-mini" rel="uniform">
+												<!--这种数据字典下拉框基本不会变就从别的控件拷过来，不ajax请求了-->
+												<@$('select[name=docRegister]').eq(0).find("option").each(function(i,e){@>
+														<@==$.getJqueryOuterHtml($(e).removeAttr('selected').attr('selected',$(e).attr('value') == student.docRegister))@>
+												<@});@>
+											</select>
 										</div>
 									</div>
 
@@ -430,6 +481,23 @@
 	<select name="gender">
 		<c:forEach var="g" items="${genderEnums}">
 			<option value="${g}">${g.description}</option>
+		</c:forEach>
+	</select>
+	<select name="enrollType">
+		<c:forEach var="t" items="${enrollTypes}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="docQualification">
+		<option value=""></option>
+		<c:forEach var="t" items="${trueFalseEnums}">
+			<option value="${t}">${t.description}</option>
+		</c:forEach>
+	</select>
+	<select name="docRegister">
+		<option value=""></option>
+		<c:forEach var="t" items="${trueFalseEnums}">
+			<option value="${t}">${t.description}</option>
 		</c:forEach>
 	</select>
 	</div>
