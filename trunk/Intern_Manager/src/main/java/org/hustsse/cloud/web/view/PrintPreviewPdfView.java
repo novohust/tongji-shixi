@@ -31,7 +31,8 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 
 	@Override
 	protected Document newDocument() {
-		return new Document(PageSize.A4, 0, 0, 0, 0);
+		return new Document(PageSize.A4, PAGE_MARGIN_LEFT, PAGE_MARGIN_RIGHT, PAGE_MARGIN_TOP, PAGE_MARGIN_BOTTOM);
+		// 左、右、上、下
 	}
 
 	private static PdfPCell empty;
@@ -54,6 +55,10 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 	private static int CELL_PADDING_RIGHT;
 	private static int CELL_PADDING_LEFT;
 	private static int DESC_SPACING_BEFORE;
+	private static int PAGE_MARGIN_TOP;
+	private static int PAGE_MARGIN_LEFT;
+	private static int PAGE_MARGIN_BOTTOM;
+	private static int PAGE_MARGIN_RIGHT;
 
 	@Override
 	protected void buildPdfDocument(Map<String, Object> model, Document document, PdfWriter writer, HttpServletRequest request,
@@ -77,6 +82,10 @@ public class PrintPreviewPdfView extends AbstractIText5PdfView {
 					CELL_PADDING_RIGHT = Integer.parseInt(config.getProperty("pdf_cell_padding_right"));
 					CELL_PADDING_LEFT = Integer.parseInt(config.getProperty("pdf_cell_padding_left"));
 					DESC_SPACING_BEFORE = Integer.parseInt(config.getProperty("pdf_desc_spacing_before"));
+					PAGE_MARGIN_TOP = Integer.parseInt(config.getProperty("pdf_page_margin_top"));
+					PAGE_MARGIN_BOTTOM = Integer.parseInt(config.getProperty("pdf_page_margin_bottom"));
+					PAGE_MARGIN_RIGHT = Integer.parseInt(config.getProperty("pdf_page_margin_right"));
+					PAGE_MARGIN_LEFT = Integer.parseInt(config.getProperty("pdf_page_margin_left"));
 				}
 			}
 		}
